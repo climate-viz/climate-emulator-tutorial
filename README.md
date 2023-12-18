@@ -1,8 +1,24 @@
 # climate-emulator-tutorial
 A tutorial for getting started with machine learning for climate modeling
 
-Edit notebook at: https://colab.research.google.com/drive/1XwTghkLbxrckwUeE_UMQ-HtuAeYfEETj?usp=sharing
+# Installation
+```
+git clone git@github.com:blutjens/climate-emulator-tutorial.git
+cd climate-emulator-tutorial
+conda create --name emcli
+conda activate emcli
+conda install pip
+pip install -r requirements.txt
+pip install -e .
+ipython kernel install --user --name=emcli # Link conda environment to jupyter notebook
+```
 
+# Start the notebook
+```
+jupyter notebook climate_emulator_tutorial.ipynb
+```
+
+## Miscellanous likely irrelevant:
 ### Run hyperparameter search on server
 Note: this script has only been tested on a supercomputer at MIT. Modifications are likely necessary for other supercomputers.
 ```
@@ -19,4 +35,16 @@ export WANDB_MODE='offline'
 python emcli/models/unet/train.py --parallel
 --> this will import for 10min
 wandb sync latest-run
+```
+
+### (Untested scripts:) Running the code on MIT's svante supercomputer
+```
+ssh <kerberos>@svante-login.mit.edu # or to land on file server $ ssh <kerberos>@svante6.mit.edu
+cd /net/fs06/d3/CMIP5/MPI-GE/
+module load anaconda3/2023.07 # request pytorch as software by emailing jp-admin@techsquare.com
+srun --pty -p fdr -n 1 /bin/bash # interactive node
+source activate emcli
+# has packages: conda install jupyterlab, cartopy
+# need packages: conda install netcdf4, torchvision, (jupyter_bokeh, geoviews), regionmask, streamlit, xskillscore
+conda deactivate
 ```
